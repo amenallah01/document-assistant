@@ -14,7 +14,7 @@ To run this program, you need the following:
    - `sentence-transformers` (for the retriever).
    - `scikit-learn` (for cosine similarity).
    - `numpy` (for numerical operations).
-   - `re` (for text preprocessing).
+   - `re` (for text preprocessing). 
 
 You can install the required libraries using:
 ```bash
@@ -80,25 +80,51 @@ If you built the Docker image, you can run the program inside the container:
 docker run -it document-assistant
 ```
 
----
+#### Jupyter Notebook
+1. Install Jupyter Notebook:
+   ```bash
+   pip install notebook
+   ```
+2. Open a notebook in the `src` directory and run the following code:
+   ```python
+   from retriever import Retriever
+   from generator import Generator
 
-### Example Usage
-#### Input Document (`data/sample_doc.txt`):
-```
-The warranty period for Product X is 12 months from the date of purchase. Product X must be maintained according to the manual for the warranty to remain valid. If you encounter issues with Product X, contact customer support.
-```
+   # Initialize the retriever and generator
+   retriever = Retriever(chunk_size=50)
+   generator = Generator(model_name="t5-small", debug=True)
 
-#### Query:
-```
-What is the warranty period for Product X?
-```
+   # Load the document
+   document_path = "../data/sample_doc.txt"
+   retriever.load_document(document_path)
 
-#### Output:
-```
-Query: What is the warranty period for Product X?
-Context: The warranty period for Product X is 12 months from the date of purchase. Product X must be maintained according to the manual for the warranty to remain valid. If you encounter issues with Product X, contact customer support.
-Generated Answer: The warranty period for Product X is 12 months from the date of purchase.
-```
+   # Query the system
+   query = "What is the warranty period for Product X?"
+   top_k = 2
+   retrieved = retriever.retrieve(query, top_k=top_k)
+
+   # Combine retrieved contexts
+   context = " ".join([text for text, score in retrieved])
+   
+   # Generate an answer
+   answer = generator.generate(context, query)
+
+   # Print results
+   print("Query:", query)
+   print("Context:", context)
+   print("Generated Answer:", answer)
+   ```
+
+#### Gradio UI (Optional)
+1. Install Gradio:
+   ```bash
+   pip install gradio
+   ```
+2. Run the `app.py` script:
+   ```bash
+   python src/app.py
+   ```
+3. Open the link provided in the terminal (e.g., `http://127.0.0.1:7860`) to access the Gradio UI.
 
 ---
 
@@ -110,10 +136,13 @@ document-assistant/
 ├── src/                    # Source code
 │   ├── main.py             # Main script to run the program
 │   ├── retriever.py        # Retriever module
-│   └── generator.py        # Generator module
+│   ├── generator.py        # Generator module
+│   └── app.py              # Gradio UI script (optional)
 ├── Dockerfile              # Docker configuration
 ├── requirements.txt        # Python dependencies
-└── README.md               # This file
+├── .dockerignore           # Files to ignore in Docker build
+├── setup.sh                # Configuration script (optional)
+└── README.md               # Project documentation
 ```
 
 ---
@@ -136,8 +165,4 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 
 ---
 
-For further assistance, feel free to open an issue on the repository or contact the maintainers.
-
----
-
-This README provides a clear and concise guide for users to set up and run your Document Assistant using RAG. Let me know if you need further adjustments!
+For further assistance, feel free to open an issue on the repository or contact me ! .
