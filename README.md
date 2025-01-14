@@ -140,8 +140,6 @@ document-assistant/
 │   └── app.py              # Gradio UI script (optional)
 ├── Dockerfile              # Docker configuration
 ├── requirements.txt        # Python dependencies
-├── .dockerignore           # Files to ignore in Docker build
-├── setup.sh                # Configuration script (optional)
 └── README.md               # Project documentation
 ```
 
