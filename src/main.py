@@ -3,7 +3,7 @@ from generator import Generator
 
 if __name__ == "__main__":
     # Replace this with your actual Hugging Face API token
-    HF_API_TOKEN = "your_actual_huggingface_api_token"
+    HF_API_TOKEN = "your_new_huggingface_api_token"
 
     # Initialize the retriever and generator
     retriever = Retriever(chunk_size=50)
