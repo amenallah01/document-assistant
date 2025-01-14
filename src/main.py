@@ -5,8 +5,6 @@
 ####                             Main                               #### 
 ########################################################################
 
-
-
 from retriever import Retriever
 from generator import Generator
 
