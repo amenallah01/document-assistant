@@ -1,23 +1,39 @@
-from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
+from huggingface_hub import InferenceClient
 
 class Generator:
-    def __init__(self, model_name="t5-small"):
+    def __init__(self, model_name="gpt2", api_token=None, debug=False):
         """
-        Initialize the generator with a pre-trained model.
-        :param model_name: Name of the pre-trained model to use.
+        Initialize the generator using Hugging Face's InferenceClient.
+        :param model_name: Name of the model to use.
+        :param api_token: Your Hugging Face API token.
+        :param debug: Enable debug logging.
         """
-        self.tokenizer = AutoTokenizer.from_pretrained(model_name)
-        self.model = AutoModelForSeq2SeqLM.from_pretrained(model_name)
+        self.client = InferenceClient(model=model_name, token=api_token)
+        self.debug = debug
 
-    def generate(self, context, question, max_length=100):
+    def log(self, message):
         """
-        Generate an answer based on the context and question.
-        :param context: Retrieved context text.
+        Log a message if debug mode is enabled.
+        :param message: The message to log.
+        """
+        if self.debug:
+            print(f"[DEBUG] {message}")
+
+    def generate(self, context, question):
+        """
+        Generate an answer using the Hugging Face Inference API.
+        :param context: Context text.
         :param question: User's question.
-        :param max_length: Maximum length of the generated response.
-        :return: Generated answer as a string.
+        :return: Generated answer.
         """
-        input_text = f"question: {question} context: {context}"
-        inputs = self.tokenizer.encode(input_text, return_tensors="pt", truncation=True)
-        outputs = self.model.generate(inputs, max_length=max_length, num_beams=4, early_stopping=True)
-        return self.tokenizer.decode(outputs[0], skip_special_tokens=True)
+        input_text = f"Context: {context}\nQuestion: {question}\nAnswer:"
+        self.log(f"Input text: {input_text}")
+
+        try:
+            # Pass the input text directly to text_generation
+            response = self.client.text_generation(input_text)
+            self.log(f"API response: {response}")
+            return response  # Return the generated text directly
+        except Exception as e:
+            self.log(f"Error during API call: {e}")
+            return f"Error: {e}"

@@ -1,3 +1,7 @@
 sentence-transformers
 scikit-learn
 transformers
+sentencepiece
+torch
+transformers
+
