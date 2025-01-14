@@ -1,3 +1,11 @@
+########################################################################
+####               Document Assistant Using RAG                     ####
+####                     KRISSAAN AMEN ALLAH                        ####        
+########################################################################
+####                          Generator                             #### 
+########################################################################
+
+
 from transformers import T5ForConditionalGeneration, T5Tokenizer
 
 class Generator:

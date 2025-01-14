@@ -1,3 +1,11 @@
+########################################################################
+####               Document Assistant Using RAG                     ####
+####                     KRISSAAN AMEN ALLAH                        ####        
+########################################################################
+####                          Retriever                             #### 
+########################################################################
+
+
 import os
 from sentence_transformers import SentenceTransformer
 from sklearn.metrics.pairwise import cosine_similarity
