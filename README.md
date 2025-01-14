@@ -155,10 +155,3 @@ document-assistant/
 1. **Invalid API Token**: If you encounter token-related errors, ensure your Hugging Face API token is valid and has the correct permissions.
 2. **Model Not Found**: If the T5 model fails to load, ensure you have an active internet connection during the first run to download the model.
 3. **Docker Issues**: If Docker fails to build or run, ensure Docker is installed and running on your system.
---- 
-
-<<<<<<< HEAD
-For further assistance, feel free to open an issue on the repository or contact me ! .
-=======
-For further assistance, feel free to open an issue on the repository or contact me ! .
->>>>>>> ab3d6b42a21e5bbac60871a33241e88e1e751d2b
