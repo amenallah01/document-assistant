@@ -2,12 +2,9 @@ from retriever import Retriever
 from generator import Generator
 
 if __name__ == "__main__":
-    # Replace this with your actual Hugging Face API token
-    HF_API_TOKEN = "your_new_huggingface_api_token"
-
     # Initialize the retriever and generator
     retriever = Retriever(chunk_size=50)
-    generator = Generator(model_name="gpt2", api_token=HF_API_TOKEN, debug=True)
+    generator = Generator(model_name="t5-small", debug=True)  # Use "t5-base" or "t5-large" for larger models
 
     # Load the document
     document_path = "data/sample_doc.txt"

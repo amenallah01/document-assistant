@@ -1,14 +1,14 @@
-from huggingface_hub import InferenceClient
+from transformers import T5ForConditionalGeneration, T5Tokenizer
 
 class Generator:
-    def __init__(self, model_name="gpt2", api_token=None, debug=False):
+    def __init__(self, model_name="t5-small", debug=False):
         """
-        Initialize the generator using Hugging Face's InferenceClient.
-        :param model_name: Name of the model to use.
-        :param api_token: Your Hugging Face API token.
+        Initialize the generator using the T5 model.
+        :param model_name: Name of the T5 model to use (e.g., "t5-small", "t5-base", "t5-large").
         :param debug: Enable debug logging.
         """
-        self.client = InferenceClient(model=model_name, token=api_token)
+        self.model = T5ForConditionalGeneration.from_pretrained(model_name)
+        self.tokenizer = T5Tokenizer.from_pretrained(model_name)
         self.debug = debug
 
     def log(self, message):
@@ -21,19 +21,26 @@ class Generator:
 
     def generate(self, context, question):
         """
-        Generate an answer using the Hugging Face Inference API.
+        Generate an answer using the T5 model.
         :param context: Context text.
         :param question: User's question.
         :return: Generated answer.
         """
-        input_text = f"Context: {context}\nQuestion: {question}\nAnswer:"
+        # Format the input for T5
+        input_text = f"question: {question} context: {context}"
         self.log(f"Input text: {input_text}")
 
         try:
-            # Pass the input text directly to text_generation
-            response = self.client.text_generation(input_text)
-            self.log(f"API response: {response}")
-            return response  # Return the generated text directly
+            # Tokenize the input
+            inputs = self.tokenizer(input_text, return_tensors="pt", max_length=512, truncation=True)
+            
+            # Generate the output
+            outputs = self.model.generate(inputs["input_ids"], max_length=150, num_beams=4, early_stopping=True)
+            
+            # Decode the output to text
+            answer = self.tokenizer.decode(outputs[0], skip_special_tokens=True)
+            self.log(f"Generated answer: {answer}")
+            return answer
         except Exception as e:
-            self.log(f"Error during API call: {e}")
+            self.log(f"Error during generation: {e}")
             return f"Error: {e}"
