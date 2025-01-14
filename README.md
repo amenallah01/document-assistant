@@ -140,8 +140,6 @@ document-assistant/
 │   └── app.py              # Gradio UI script (optional)
 ├── Dockerfile              # Docker configuration
 ├── requirements.txt        # Python dependencies
-├── .dockerignore           # Files to ignore in Docker build
-├── setup.sh                # Configuration script (optional)
 └── README.md               # Project documentation
 ```
 
@@ -157,12 +155,6 @@ document-assistant/
 1. **Invalid API Token**: If you encounter token-related errors, ensure your Hugging Face API token is valid and has the correct permissions.
 2. **Model Not Found**: If the T5 model fails to load, ensure you have an active internet connection during the first run to download the model.
 3. **Docker Issues**: If Docker fails to build or run, ensure Docker is installed and running on your system.
-
----
-
-## License
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
-
----
+--- 
 
 For further assistance, feel free to open an issue on the repository or contact me ! .
